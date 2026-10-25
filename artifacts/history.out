@@ -1,0 +1,146 @@
+    1  passwd
+    2  clear
+    3  tmux
+    4  dnf
+    5  dnf install tmux
+    6  sudo dnf install tmux
+    7  clear
+    8  tmux
+    9  clear
+   10  history
+   11  clear
+   12  ip a
+   13  sudo hostnamectl set-hostname mephi-2026.domain.local
+   14  cat /etc/hostname
+   15  clear
+   16  echo 'hello'
+   17  nslookup mephi-2026.domain.local
+   18  ping -c 4 8.8.8.8 > ping.out 
+   19  cat ping.out 
+   20  sudo dnf update -y
+   21  sudo dnf clean all
+   22  sudo dnf makecache
+   23  ip -c a
+   24  curator
+   25  clear
+   26  history
+   27  sudo dnf update
+   28  sudo dnf install nginx libcap-ng-utils
+   29  sudo dnf download --destdir /tmp tcpdump
+   30  sudo rpm -ivh /tmp/tcpdump-*.rpm
+   31  uname -m
+   32  sudo dnf download --destdir /tmp --arch x86_64 tcpdump
+   33  sudo rm -f /tmp/tcpdump-*.i686.rpm
+   34  sudo rpm -ivh /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+   35  rpm -q tcpdump
+   36  tcpdump --version
+   37  sudo dnf history > dnf.out
+   38  rpm -qa --last | grep tcpdump >> dnf.out
+   39  clear
+   40  lsblk
+   41  sudo mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+   42  sudo mkfs.ext4 -L MEPHI_WEB /dev/sdb
+   43  lsblk
+   44  sudo wipefs -a /dev/sdb
+   45  sudo parted /dev/sdb mklabel gpt
+   46  sudo parted -a opt /dev/sdb mkpart primary ext4 0% 100%
+   47  lsblk /dev/sdb
+   48  sudo mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+   49  lsblk -o NAME,SIZE,FSTYPE,LABEL,UUID /dev/sdb
+   50  ls -i
+   51  ls -ila
+   52  stat dnf.out 
+   53  history
+   54  ls -ila /
+   55  clear
+   56  sudo mkdir /mephi-web
+   57  sudo echo "LABEL=MEPHI_WEB   /mephi-web   ext4   defaults   0 2" > /etc/fstab 
+   58  sudo echo "LABEL=MEPHI_WEB   /mephi-web   ext4   defaults   0 2" | sudo tee /etc/fstab 
+   59  cat /etc/f
+   60  cat /etc/fstab 
+   61  sudo systemctl daemon-reload
+   62  sudo mount -a
+   63  sudo mount -L MEPHI_WEB /mephi-web
+   64  sudo umount /mephi-web
+   65  sudo mount -L MEPHI_WEB /mephi-web
+   66  findmnt /mephi-web
+   67  umount
+   68  mount
+   69  mount | grep mephi-web
+   70  clear
+   71  sudo systemctl enable --now nginx
+   72  sudo journalctl -b -u nginx
+   73  sudo journalctl -b -u nginx --no-pager > journalctl.out
+   74  clear
+   75  sudo groupadd developers
+   76  sudo groupadd -g 4444 curators
+   77  sudo useradd -m -u 5501 -G developers user1
+   78  sudo usermod -u 5501 -aG developers user1
+   79  sudo useradd -m -u 5502 -G developers user2
+   80  sudo useradd -m -u 5503 -G developers user3
+   81  sudo useradd -m -G curators curator1
+   82  sudo useradd -m -G curators curator2
+   83  id user1
+   84  id curator1
+   85  sudo mkdir -p /data/mephi-2026
+   86  sudo chown root:developers /data/mephi-2026
+   87  sudo chmod 2770 /data/mephi-2026
+   88  claer
+   89  clear
+   90  sudo setfacl -m  g:developers:rwx,g:curators:r-x,o::--- /data/mephi-2026
+   91  sudo setfacl -d -m g:developers:rwx,g:curators:r-x,o::--- /data/mephi-2026
+   92  getfacl /data/mephi-202
+   93  getfacl /data/mephi-2026
+   94  clear
+   95  ls -l $(which tcpdump)
+   96  getcap $(which tcpdump)
+   97  clear
+   98  sudo setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+   99  getcap /usr/sbin/tcpdump
+  100   sudo -u user1 tcpdump 
+  101  clear
+  102  getenforce
+  103  sestatus
+  104  echo "<h1>MEPHI WEB</h1>" | sudo tee /mephi-web/index.html
+  105  sudo nano /etc/nginx/nginx.conf
+  106  sudo vi /etc/nginx/nginx.conf
+  107  cat /etc/nginx/nginx.conf | grep server -C 5
+  108  sudo nginx -t
+  109  sudo systemctl restart nginx
+  110  curl -I http://localhost
+  111  sudo semanage fcontext -a -t httpd_sys_content_t "/mephi-web(/.*)?"
+  112  sudo dnf install policycoreutils-python-utils
+  113  sudo semanage fcontext -a -t httpd_sys_content_t "/mephi-web(/.*)?"
+  114  sudo restorecon -Rv /mephi-web
+  115  ls -Zd /mephi-web/
+  116  ls -Zd /etc/nginx/
+  117  curl http://localhost
+  118  clear
+  119  sudo vi /etc/security/access.conf 
+  120  echo "-:(curators):LOCAL" | sudo tee /etc/security/access.conf 
+  121  sudo tail -n 2 /etc/security/access.conf 
+  122  sudo vi /etc/pam.d/login
+  123  cat /etc/pam.d/login 
+  124  clear
+  125  sudo sed -i '/^account[[:space:]]\+required[[:space:]]\+pam_nologin.so/a account    required     pam_access.so' /etc/pam.d/login
+  126  sudo journalctl -b | grep -i pam_access
+  127  su - curator1
+  128  su - curator2
+  129  clear
+  130  su - curator2
+  131  sudo su - curator2
+  132  clear
+  133  sudo sed -i 's/^PASS_MAX_DAYS.*/PASS_MAX_DAYS   90/' /etc/login.defs
+  134  grep ^PASS_ /etc/login.defs
+  135  for u in pavel user1 user2 user3 curator1 curator2; do sudo chage -M 90 $u; done
+  136  clear
+  137  echo "Hello from Student: 356453" | sudo tee /mephi-web/index.html
+  138  sudo restorecon -v /mephi-web/index.html
+  139  sudo chmod 644 /mephi-web/index.html
+  140  curl http://localhost
+  141  stat /data/mephi-2026 > ~/stat.out
+  142  getcap /usr/sbin/tcpdump > ~/getcap.out
+  143  getenforce > ~/getenforce.out
+  144  stat /mephi-web >> ~/stat.out
+  145  curl http://localhost/ > curl.out 
+  146  history > ~/history.out 
