@@ -467,6 +467,8 @@ PASS_WARN_AGE	7
 for u in pavel user1 user2 user3 curator1 curator2; do sudo chage -M 90 $u; done
 ```
 
+Также изменена настройка `minlen` длины пароля в [pwquality.conf](artifacts/pwquality.conf)
+
 # Раздел 7
 
 ```
